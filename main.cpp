@@ -6,11 +6,11 @@
 // to calculate airC: coefficient for mass and air resistance = 1/2 * rho * A * C_D / M = 1/2 * 1.205 kg / m^3 * ( pi * 0.241 m * 0.241 m ) * ~0.5 / ( 0.2693 kg ) ≈ 0.2041 m^-1 
 #define airC 0.2041 // m^-1
 #define dT .01 // s
-#define dV .01 // m/s
-#define dTheta .01 // rad
+#define dV .001 // m/s
+#define dTheta .001 // rad
 #define g 9.81 // m / s^2
-#define acceptableError .3 // m
-#define gradientCoefficient .01
+#define acceptableError .01 // m
+#define gradientCoefficient .001
 
 double getShotError(double targetX, double targetY, double RVx, double RVy, double shooterTheta, double shooterVelocity)
 {
@@ -54,14 +54,13 @@ double getShotError(double targetX, double targetY, double RVx, double RVy, doub
 std::pair<double, double> getBestShot(double targetX, double targetY, double RVx, double RVy, double shooterTheta, double shooterVelocity)
 {
   double error = getShotError(targetX, targetY, RVx, RVy, shooterTheta, shooterVelocity);
-    std::cout << "error: " << error << " theta: " << shooterTheta << " velocity: " << shooterVelocity << std::endl;
 
   while(error > acceptableError)
-  // for(int i = 0; i < 10; i++)
   {
-    shooterTheta += gradientCoefficient * (error - getShotError(targetX, targetY, RVx, RVy, shooterTheta + dTheta, shooterVelocity)) / dTheta;
-    shooterVelocity += gradientCoefficient * (error - getShotError(targetX, targetY, RVx, RVy, shooterTheta, shooterVelocity + dV)) / dV;
+    shooterTheta += error * gradientCoefficient * (error - getShotError(targetX, targetY, RVx, RVy, shooterTheta + dTheta, shooterVelocity)) / dTheta;
+    shooterVelocity += error * gradientCoefficient * (error - getShotError(targetX, targetY, RVx, RVy, shooterTheta, shooterVelocity + dV)) / dV;
     error = getShotError(targetX, targetY, RVx, RVy, shooterTheta, shooterVelocity);
+    // std::cout << "error: " << error << " theta: " << shooterTheta << " velocity: " << shooterVelocity << std::endl;
   }
 
   return std::make_pair(shooterTheta, shooterVelocity);
