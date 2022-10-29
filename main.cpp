@@ -1,5 +1,5 @@
 #include "open3d/Open3D.h"
-#include "ceres/ceres.h"
+#include <math.h>
 #define shooterPhi M_PI / 4 // rad
 #define targetHeight 2.64 // m
 // to calculate airC: coefficient for mass and air resistance = 1/2 * rho * A * C_D / M = 1/2 * 1.205 kg / m^3 * ( pi * 0.241 m * 0.241 m ) * ~0.5 / ( 0.2693 kg ) ≈ 0.2041 m^-1 
