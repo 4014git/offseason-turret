@@ -21,19 +21,20 @@ double getShotError(double targetX, double targetY, double RVx, double RVy, doub
   double z = 0;
   while(Vz > 0 || z > targetHeight)
   {
-    // a = airC*V*V
-    // Ax = a * -Vx/V = -airC*V*Vx
-    // V = sqrt(Vx*Vx + Vy*Vy + Vz*Vz);
+    // a⃗ = -airC*V*V⃗
+    // dV⃗ = -airC*V*V⃗ * dT
     double dVx = -airC*sqrt(Vx*Vx + Vy*Vy + Vz*Vz)*Vx * dT;
     double dVy = -airC*sqrt(Vx*Vx + Vy*Vy + Vz*Vz)*Vy * dT;
     double dVz = (-airC*sqrt(Vx*Vx + Vy*Vy + Vz*Vz)*Vz - g) * dT;
-    Vx += dVx;
-    Vy += dVy;
-    Vz += dVz;
+
     // trapazoidal integration
     x += (Vx + dVx/2) * dT;
     y += (Vy + dVy/2) * dT;
     z += (Vz + dVz/2) * dT;
+
+    Vx += dVx;
+    Vy += dVy;
+    Vz += dVz;
   }
 
   return sqrt((x-targetX)*(x-targetX) + (y-targetY)*(y-targetY));
@@ -50,20 +51,21 @@ void visualizeShot(double targetX, double targetY, double RVx, double RVy, doubl
   double z = 0;
   while(Vz > 0 || z > targetHeight)
   {
-    // a = airC*V*V
-    // Ax = a * -Vx/V = -airC*V*Vx
-    // V = sqrt(Vx*Vx + Vy*Vy + Vz*Vz);
+    // a⃗ = -airC*V*V⃗
+    // dV⃗ = -airC*V*V⃗ * dT
     double dVx = -airC*sqrt(Vx*Vx + Vy*Vy + Vz*Vz)*Vx * dT;
     double dVy = -airC*sqrt(Vx*Vx + Vy*Vy + Vz*Vz)*Vy * dT;
     double dVz = (-airC*sqrt(Vx*Vx + Vy*Vy + Vz*Vz)*Vz - g) * dT;
-    Vx += dVx;
-    Vy += dVy;
-    Vz += dVz;
+
     // trapazoidal integration
     x += (Vx + dVx/2) * dT;
     y += (Vy + dVy/2) * dT;
     z += (Vz + dVz/2) * dT;
     PointCloud->points_.push_back({x, y, z});
+
+    Vx += dVx;
+    Vy += dVy;
+    Vz += dVz;
   }
 
   auto goal = open3d::geometry::TriangleMesh::CreateTorus(.61, 0.01, 16, 16);
