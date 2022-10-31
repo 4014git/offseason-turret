@@ -1,4 +1,5 @@
 #include "ascent/Ascent.h"
+#include "ensmallen.hpp"
 #include <iostream>
 #include <math.h>
 
@@ -17,7 +18,6 @@ void shotStep(const asc::state_t& x, asc::state_t& xd, const double){
   xd[3] = airC*x[3]*sqrt(x[3]*x[3]+x[4]*x[4]+x[5]*x[5]);
   xd[4] = airC*x[4]*sqrt(x[3]*x[3]+x[4]*x[4]+x[5]*x[5]);
   xd[5] = airC*x[5]*sqrt(x[3]*x[3]+x[4]*x[4]+x[5]*x[5]) + g;
-  std::cout << x[0] << " " << x[1] << " " << x[2] << std::endl;
 }
 
 // https://en.wikipedia.org/wiki/Projectile_motion#Trajectory_of_a_projectile_with_Newton_drag
@@ -70,5 +70,5 @@ int main() {
   
   // std::pair<double, double> bestShot = getBestShot(x, y, RVx, RVy, theta, velocity);
 
-  std::cout << getShotError(5,5,1,-5,0,10);
+  getShotError(5,5,1,-5,0,10);
 }
