@@ -1,5 +1,4 @@
-#include "ascent/Ascent.h"
-#include "ensmallen.hpp"
+#include <chrono>
 #include <iostream>
 #include <math.h>
 
@@ -11,64 +10,56 @@
 
 #define dt 1e-3 // s
 
-void shotStep(const asc::state_t& x, asc::state_t& xd, const double){
-  xd[0] = x[3];
-  xd[1] = x[4];
-  xd[2] = x[5];
-  xd[3] = airC*x[3]*sqrt(x[3]*x[3]+x[4]*x[4]+x[5]*x[5]);
-  xd[4] = airC*x[4]*sqrt(x[3]*x[3]+x[4]*x[4]+x[5]*x[5]);
-  xd[5] = airC*x[5]*sqrt(x[3]*x[3]+x[4]*x[4]+x[5]*x[5]) + g;
-}
-
-// https://en.wikipedia.org/wiki/Projectile_motion#Trajectory_of_a_projectile_with_Newton_drag
-// https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods#Implicit_Runge%E2%80%93Kutta_methods
-// state_t = { x, y, z, Vx, Vy, Vz }
 double getShotError(double targetX, double targetY, double RVx, double RVy, double shooterTheta, double shooterVelocity)
 {
-  asc::state_t s = { 0.0, 0.0, 0.0, shooterVelocity * cos(shooterTheta) * cos(shooterPhi) + RVx, shooterVelocity * sin(shooterTheta) * cos(shooterPhi) + RVy, shooterVelocity * sin(shooterPhi) };
-  double t = 0.0;
+  double 
+    x = 0, y = 0, z = 0,
+    Vx = shooterVelocity * cos(shooterTheta) * cos(shooterPhi) + RVx, Vy = shooterVelocity * sin(shooterTheta) * cos(shooterPhi) + RVy, Vz = shooterVelocity * sin(shooterPhi);
+  while(Vz > 0 || z > targetHeight)
+  {
+    double k1x = Vx;
+    double k1y = Vy;
+    double k1z = Vz;
+    double k1Vx = airC*Vx*sqrt(Vx*Vx+Vy*Vy+Vz*Vz);
+    double k1Vy = airC*Vy*sqrt(Vx*Vx+Vy*Vy+Vz*Vz);
+    double k1Vz = airC*Vz*sqrt(Vx*Vx+Vy*Vy+Vz*Vz) + g;
 
-  asc::RK4 integrator;
-  asc::Recorder recorder;
+    double k2x = Vx+dt*k1Vx/2;
+    double k2y = Vy+dt*k1Vy/2;
+    double k2z = Vz+dt*k1Vz/2;
+    double k2Vx = airC*(Vx+dt*k1Vx/2)*sqrt((Vx+dt*k1Vx/2)*(Vx+dt*k1Vx/2)+(Vy+dt*k1Vy/2)*(Vy+dt*k1Vy/2)+(Vz+dt*k1Vz/2)*(Vz+dt*k1Vz/2));
+    double k2Vy = airC*(Vy+dt*k1Vy/2)*sqrt((Vx+dt*k1Vx/2)*(Vx+dt*k1Vx/2)+(Vy+dt*k1Vy/2)*(Vy+dt*k1Vy/2)+(Vz+dt*k1Vz/2)*(Vz+dt*k1Vz/2));
+    double k2Vz = airC*(Vz+dt*k1Vz/2)*sqrt((Vx+dt*k1Vx/2)*(Vx+dt*k1Vx/2)+(Vy+dt*k1Vy/2)*(Vy+dt*k1Vy/2)+(Vz+dt*k1Vz/2)*(Vz+dt*k1Vz/2)) + g;
 
-  while(s[5] > 0 || s[2] > targetHeight){
-    recorder({t, s[0], s[1], s[2], s[3], s[4], s[5]});
-    integrator(shotStep, s, t, dt);
+    double k3x = Vx+dt*k2Vx/2;
+    double k3y = Vy+dt*k2Vy/2;
+    double k3z = Vz+dt*k2Vz/2;
+    double k3Vx = airC*(Vx+dt*k2Vx/2)*sqrt((Vx+dt*k2Vx/2)*(Vx+dt*k2Vx/2)+(Vy+dt*k2Vy/2)*(Vy+dt*k2Vy/2)+(Vz+dt*k2Vz/2)*(Vz+dt*k2Vz/2));
+    double k3Vy = airC*(Vy+dt*k2Vy/2)*sqrt((Vx+dt*k2Vx/2)*(Vx+dt*k2Vx/2)+(Vy+dt*k2Vy/2)*(Vy+dt*k2Vy/2)+(Vz+dt*k2Vz/2)*(Vz+dt*k2Vz/2));
+    double k3Vz = airC*(Vz+dt*k2Vz/2)*sqrt((Vx+dt*k2Vx/2)*(Vx+dt*k2Vx/2)+(Vy+dt*k2Vy/2)*(Vy+dt*k2Vy/2)+(Vz+dt*k2Vz/2)*(Vz+dt*k2Vz/2)) + g;
+
+    double k4x = Vx+dt*k3Vx;
+    double k4y = Vy+dt*k3Vy;
+    double k4z = Vz+dt*k3Vz;
+    double k4Vx = airC*(Vx+dt*k3Vx)*sqrt((Vx+dt*k3Vx)*(Vx+dt*k3Vx)+(Vy+dt*k3Vy)*(Vy+dt*k3Vy)+(Vz+dt*k3Vz)*(Vz+dt*k3Vz));
+    double k4Vy = airC*(Vy+dt*k3Vy)*sqrt((Vx+dt*k3Vx)*(Vx+dt*k3Vx)+(Vy+dt*k3Vy)*(Vy+dt*k3Vy)+(Vz+dt*k3Vz)*(Vz+dt*k3Vz));
+    double k4Vz = airC*(Vz+dt*k3Vz)*sqrt((Vx+dt*k3Vx)*(Vx+dt*k3Vx)+(Vy+dt*k3Vy)*(Vy+dt*k3Vy)+(Vz+dt*k3Vz)*(Vz+dt*k3Vz)) + g;
+
+    x += dt*(k1x+2*k2x+2*k3x+k4x)/6;
+    y += dt*(k1y+2*k2y+2*k3y+k4y)/6;
+    z += dt*(k1z+2*k2z+2*k3z+k4z)/6;
+    Vx += dt*(k1Vx+2*k2Vx+2*k3Vx+k4Vx)/6;
+    Vy += dt*(k1Vy+2*k2Vy+2*k3Vy+k4Vy)/6;
+    Vz += dt*(k1Vz+2*k2Vz+2*k3Vz+k4Vz)/6;
   }
 
-  recorder.csv("shot", { "t", "x", "y", "z", "Vx", "vY", "vZ" });
-
-  return sqrt((s[0]-targetX)*(s[0]-targetX) + (s[1]-targetY)*(s[1]-targetY));
+  return sqrt((x-targetX)*(x-targetX)+(y-targetY)*(y-targetY));
 }
 
-// double getShotError(double targetX, double targetY, double RVx, double RVy, double shooterTheta, double shooterVelocity){
-//   return shooterTheta * shooterTheta + shooterVelocity * shooterVelocity;
-// }
-
-// std::pair<double, double> getBestShot(double targetX, double targetY, double RVx, double RVy, double shooterTheta, double shooterVelocity)
-// {
-//   while(getShotError(targetX, targetY, RVx, RVy, shooterTheta, shooterVelocity) > acceptableError)
-//   {
-//     double gradX = ( getShotError(targetX, targetY, RVx, RVy, shooterTheta - d, shooterVelocity) - getShotError(targetX, targetY, RVx, RVy, shooterTheta + d, shooterVelocity)) / ( 2 * d );
-//     double gradY = ( getShotError(targetX, targetY, RVx, RVy, shooterTheta, shooterVelocity - d) - getShotError(targetX, targetY, RVx, RVy, shooterTheta, shooterVelocity + d)) / ( 2 * d );
-//     shooterTheta += gradientCoefficient * gradX;
-//     shooterVelocity += gradientCoefficient * gradY;
-
-//     std::cout << getShotError(targetX, targetY, RVx, RVy, shooterTheta, shooterVelocity) << std::endl;
-//   }
-
-//   return std::make_pair(shooterTheta, shooterVelocity);
-// }
-
-int main() {
-  // double x = 5;
-  // double y = 5;
-  // double RVx = 1;
-  // double RVy = -5;
-  // double theta = 0;
-  // double velocity = 10;
-  
-  // std::pair<double, double> bestShot = getBestShot(x, y, RVx, RVy, theta, velocity);
-
-  getShotError(5,5,1,-5,0,10);
+int main()
+{
+  clock_t start = clock();
+  std::cout << getShotError(5,5,1,-5,0,10) << std::endl;
+  clock_t end = clock();
+  std::cout << "Time: " << (end-start)/(double)CLOCKS_PER_SEC << std::endl;
 }

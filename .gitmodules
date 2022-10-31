@@ -1,6 +1,3 @@
-[submodule "Ascent"]
-	path = Ascent
-	url = https://github.com/AnyarInc/Ascent
 [submodule "ensmallen"]
 	path = ensmallen
 	url = https://github.com/mlpack/ensmallen
