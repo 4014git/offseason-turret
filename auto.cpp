@@ -13,6 +13,7 @@ using namespace autodiff;
 #define learningRate 1e-2 // m^-1
 
 // https://en.wikipedia.org/wiki/Projectile_motion#Trajectory_of_a_projectile_with_Newton_drag
+// https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
 dual getShotError(const dual tx, const dual ty, const dual rvx, const dual rvy, const dual θ, const dual v)
 {
   dual 
