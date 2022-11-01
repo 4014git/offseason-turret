@@ -20,34 +20,6 @@ using namespace autodiff;
 #define dvy(vx, vy, vz) (μ*(vy)*sqrt((vx)*(vx)+(vy)*(vy)+(vz)*(vz)))
 #define dvz(vx, vy, vz) (μ*(vz)*sqrt((vx)*(vx)+(vy)*(vy)+(vz)*(vz)) + g)
 
-// #define k1x dx(vx)
-// #define k1y dy(vy)
-// #define k1z dz(vz)
-// #define k1vx dvx(vx, vy, vz)
-// #define k1vy dvy(vx, vy, vz)
-// #define k1vz dvz(vx, vy, vz)
-
-// #define k2x dx(vx+dt*k1vx/2)
-// #define k2y dy(vy+dt*k1vy/2)
-// // #define k2z dz(vz+dt*k1vz/2)
-// #define k2vx dvx(vx+dt*k1vx/2, vy+dt*k1vy/2, vz+dt*k1vz/2)
-// #define k2vy dvy(vx+dt*k1vx/2, vy+dt*k1vy/2, vz+dt*k1vz/2)
-// #define k2vz dvz(vx+dt*k1vx/2, vy+dt*k1vy/2, vz+dt*k1vz/2)
-
-// #define k3x dx(vx+dt*k2vx/2)
-// #define k3y dy(vy+dt*k2vy/2)
-// #define k3z dz(vz+dt*k2vz/2)
-// #define k3vx dvx(vx+dt*k2vx/2, vy+dt*k2vy/2, vz+dt*k2vz/2)
-// #define k3vy dvy(vx+dt*k2vx/2, vy+dt*k2vy/2, vz+dt*k2vz/2)
-// #define k3vz dvz(vx+dt*k2vx/2, vy+dt*k2vy/2, vz+dt*k2vz/2)
-
-// #define k4x dx(vx+dt*k3vx)
-// #define k4y dy(vy+dt*k3vy)
-// #define k4z dz(vz+dt*k3vz)
-// #define k4vx dvx(vx+dt*k3vx, vy+dt*k3vy, vz+dt*k3vz)
-// #define k4vy dvy(vx+dt*k3vx, vy+dt*k3vy, vz+dt*k3vz)
-// #define k4vz dvz(vx+dt*k3vx, vy+dt*k3vy, vz+dt*k3vz)
-
 // https://en.wikipedia.org/wiki/Projectile_motion#Trajectory_of_a_projectile_with_Newton_drag
 // https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
 dual getShotError(const dual tx, const dual ty, const dual rvx, const dual rvy, const dual θ, const dual v)
