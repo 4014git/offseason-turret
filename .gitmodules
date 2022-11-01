@@ -1,6 +1,3 @@
-[submodule "ensmallen"]
-	path = ensmallen
-	url = https://github.com/mlpack/ensmallen
-[submodule "armadillo-code"]
-	path = armadillo-code
-	url = https://gitlab.com/conradsnicta/armadillo-code
+[submodule "autodiff"]
+	path = autodiff
+	url = https://github.com/autodiff/autodiff/
