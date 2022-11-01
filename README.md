@@ -20,4 +20,4 @@ Install [CMake](https://cmake.org/) and [Ninja](https://ninja-build.org/)
 
 ### If the run script is not working
 
-This script assumes that you have a POSIX compliant shell, like bash, and the linux version of CMake ( I am not sure if the syntax is any different). If you need to dig into the weeds a bit more to compile the project, all CMake is currently doing is compiling [auto.cpp](auto.cpp) and adding the autodiff directory to the list of include directories. This should be possible to do with just a few flags with any c++ compiler.
+This script assumes that you have a POSIX compliant shell, like bash, and the linux version of CMake ( I am not sure if the syntax is any different on other platforms ). If you need to dig into the weeds a bit more to compile the project, all CMake is currently doing is compiling [auto.cpp](auto.cpp) and adding the autodiff directory to the list of include directories. This should be possible to do with just a few flags with any c++ compiler.
