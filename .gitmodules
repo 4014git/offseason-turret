@@ -1,3 +1,6 @@
 [submodule "autodiff"]
 	path = autodiff
 	url = https://github.com/autodiff/autodiff/
+[submodule "eigen"]
+	path = eigen
+	url = https://gitlab.com/libeigen/eigen
