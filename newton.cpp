@@ -86,13 +86,19 @@ Vector2dual getInitialShot(dual tx, dual ty, dual rvx, dual rvy)
 
 int main()
 {
+  auto start = std::chrono::high_resolution_clock::now();
+
   dual tx = 5, ty = 5, rvx = 1, rvy = -5;
+
   Vector2dual shot = getInitialShot(tx, ty, rvx, rvy);
-  // print shot error
+
   std::cout << getShotError(tx, ty, rvx, rvy, shot(0), shot(1)) << std::endl;
-  // get better shot
+
   for(int i = 0; i < 10; i++)
     shot = betterShot(tx, ty, rvx, rvy, shot(0), shot(1));
-  // print shot error
+
   std::cout << getShotError(tx, ty, rvx, rvy, shot(0), shot(1)) << std::endl;
+
+  auto end = std::chrono::high_resolution_clock::now();
+  std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count() << "ms" << std::endl;
 }
