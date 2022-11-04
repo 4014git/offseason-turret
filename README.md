@@ -1,6 +1,6 @@
 # Project Layout
 
-All of the code currently is in [auto.cpp](auto.cpp).
+All of the code currently is in [newton.cpp](auto.cpp). [run.sh](run.sh) is a convenience program for CMake to compile and run the code ( it works on my machine ), there are some config files like [CMakeLists.txt](CMakeLists.txt), [.gitmodules](.gitmodules), and gitignore.
 
 # Running code
 
