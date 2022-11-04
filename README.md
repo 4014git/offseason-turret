@@ -1,6 +1,6 @@
 # Project Layout
 
-All of the code currently is in [newton.cpp](auto.cpp). [run.sh](run.sh) is a convenience program for CMake to compile and run the code ( it works on my machine ), there are some config files like [CMakeLists.txt](CMakeLists.txt), [.gitmodules](.gitmodules), and gitignore.
+All of the code is in [newton.cpp](auto.cpp). [run.sh](run.sh) is a convenience program for CMake to compile and run the code ( it works on my machine ), [CMakeLists.txt](CMakeLists.txt), [.gitmodules](.gitmodules), and [.gitignore](.gitignore) are config files, and [autodiff](autodiff) and [eigen](eigen) are header only dependencies packaged as a git submodule.
 
 # Running code
 
@@ -20,4 +20,4 @@ Install [CMake](https://cmake.org/) and [Ninja](https://ninja-build.org/)
 
 ### If the run script is not working
 
-This script assumes that you have a POSIX compliant shell, like bash, and the linux version of CMake ( I am not sure if the syntax is any different on other platforms ). If you need to dig into the weeds a bit more to compile the project, all CMake is currently doing is compiling [auto.cpp](auto.cpp) and adding the autodiff directory to the list of include directories. This should be possible to do with just a few flags with any c++ compiler.
+This script assumes that you have a POSIX compliant shell, like bash, and the linux version of CMake ( I am not sure if the syntax is any different on other platforms ). If you need to dig into the weeds a bit more to compile the project, all CMake is currently doing is compiling [newton.cpp](newton.cpp) and adding autodiff and eigen as include directories. This should be possible to do with just a few flags with any c++ compiler.
