@@ -24,7 +24,6 @@ using namespace autodiff;
 
 // https://en.wikipedia.org/wiki/Projectile_motion#Trajectory_of_a_projectile_with_Newton_drag
 // https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
-// i = {θ, v}
 Vector2dual getShotError(dual tx, dual ty, dual rvx, dual rvy, dual θ, dual v)
 {
   dual 
