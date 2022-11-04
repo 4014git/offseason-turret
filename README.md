@@ -1,6 +1,6 @@
 # Project Layout
 
-All of the code is in [newton.cpp](auto.cpp). [run.sh](run.sh) is a convenience program for CMake to compile and run the code ( it works on my machine ), [CMakeLists.txt](CMakeLists.txt), [.gitmodules](.gitmodules), and [.gitignore](.gitignore) are config files, and [autodiff](autodiff) and [eigen](eigen) are header only dependencies packaged as a git submodule.
+All of the code is in [newton.cpp](newton.cpp). [run.sh](run.sh) is a convenience program for CMake to compile and run the code ( it works on my machine ), [CMakeLists.txt](CMakeLists.txt), [.gitmodules](.gitmodules), and [.gitignore](.gitignore) are config files, and [autodiff](autodiff) and [eigen](eigen) are header only dependencies packaged as a git submodule.
 
 # Running code
 
